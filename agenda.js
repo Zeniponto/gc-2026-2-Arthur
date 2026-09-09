@@ -1,4 +1,3 @@
-
 const CHAVE = "agenda-consultas";
 
 const formulario = document.getElementById("formulario");
@@ -49,15 +48,28 @@ function renderizar() {
   lista.innerHTML = "";
 
   if (consultas.length === 0) {
-    lista.innerHTML = '<tr><td colspan="4" class="vazio">Nenhuma consulta agendada.</td></tr>';
+    lista.innerHTML = '<tr><td colspan="5" class="vazio">Nenhuma consulta agendada.</td></tr>';
     return;
   }
 
-  for (const c of consultas) {
+  consultas.forEach((c, indice) => {
     const linha = document.createElement("tr");
-    linha.innerHTML = `<td>${c.data}</td><td>${c.hora}</td><td>${c.profissional}</td><td>${c.paciente}</td>`;
+    linha.innerHTML = `<td>${c.data}</td><td>${c.hora}</td><td>${c.profissional}</td><td>${c.paciente}</td><td><button type="button" data-indice="${indice}" class="cancelar">Cancelar</button></td>`;
     lista.appendChild(linha);
-  }
+  });
+
+  lista.querySelectorAll(".cancelar").forEach((botao) => {
+    botao.addEventListener("click", () => {
+      const indice = Number(botao.dataset.indice);
+      cancelar(consultas, indice);
+    });
+  });
+}
+
+function cancelar(consultas, indice) {
+  consultas.splice(indice, 1);
+  salvar(consultas);
+  renderizar();
 }
 
 formulario.addEventListener("submit", (evento) => {
