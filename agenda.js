@@ -1,5 +1,3 @@
-// Agenda de Consultas — versão 1.0.0
-// As consultas ficam no localStorage do navegador. Nada sai da máquina.
 
 const CHAVE = "agenda-consultas";
 
@@ -8,10 +6,6 @@ const mensagem = document.getElementById("mensagem");
 const lista = document.getElementById("lista");
 const aviso = document.getElementById("aviso");
 
-// O localStorage nem sempre esta disponivel: abrindo o arquivo direto do disco
-// (file://), em aba anonima, ou com o navegador bloqueando dados de site, o
-// acesso lanca excecao. Quando isso acontece a agenda continua funcionando na
-// memoria; so nao guarda ao fechar a pagina.
 let memoria = [];
 let temArmazenamento = true;
 
@@ -79,8 +73,7 @@ formulario.addEventListener("submit", (evento) => {
   const consultas = carregar();
 
   if (horarioOcupado(consultas, nova)) {
-    mensagem.textContent = "erro";
-    formulario.reset();
+    mensagem.textContent = `Horário ${nova.hora} já está ocupado com ${nova.profissional}.`;
     return;
   }
 
